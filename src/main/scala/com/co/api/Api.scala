@@ -32,6 +32,14 @@ trait Api extends ApiServices with ApiMarshallers{
           }
         }
       }
+    } ~ path("shop" / "products") {
+      pathEndOrSingleSlash {
+        get {
+          onSuccess(getProducts) { products =>
+            complete(createHttpResponse(OK, Json.toJson(products)))
+          }
+        }
+      }
     }
   }
 

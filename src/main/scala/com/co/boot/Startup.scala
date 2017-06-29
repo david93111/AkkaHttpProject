@@ -30,20 +30,17 @@ object Startup extends App with Api{
   def startUp(api: Route)(implicit system: ActorSystem): Unit = {
     implicit val ec = system.dispatcher
     val host = system.settings.config.getString("http.host")
-    // Gets the host and a port from the configuration
     val port = system.settings.config.getInt("http.port")
-
-    // bindAndHandle requires an implicit ExecutionContext
     implicit val materializer = ActorMaterializer()
     val bindingFuture: Future[ServerBinding] =
-      Http().bindAndHandle(api, host, port) // Starts the HTTP server
+      Http().bindAndHandle(api, host, port)
 
-    val log = Logging(system.eventStream, "poc_akka_remote")
+    val log = Logging(system.eventStream, "akka_project")
     bindingFuture.map { serverBinding =>
-      log.info(s"RestApi bound to ${serverBinding.localAddress} ")
+      log.info(s"Server Started on ${serverBinding.localAddress} ")
     }.onFailure {
       case ex: Exception =>
-        log.error(ex, "Failed to bind to {}:{}!", host, port)
+        log.error(ex, s"Server Bind Failed cause $ex", host, port)
         system.terminate()
     }
   }

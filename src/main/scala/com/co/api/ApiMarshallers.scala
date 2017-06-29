@@ -1,6 +1,6 @@
 package com.co.api
 
-import com.co.persistence.CandidateModel
+import com.co.persistence.{CandidateModel, ProductsModel}
 import play.api.libs.json.{Json, Writes}
 
 /**
@@ -8,4 +8,5 @@ import play.api.libs.json.{Json, Writes}
   */
 trait ApiMarshallers {
   implicit val candidatesMarshaller: Writes[CandidateModel] = Json.writes[CandidateModel]
+  implicit val productsMarshaller: Writes[ProductsModel] = Json.writes[ProductsModel]
 }
