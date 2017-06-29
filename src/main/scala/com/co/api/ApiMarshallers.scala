@@ -1,6 +1,6 @@
-package com.api
+package com.co.api
 
-import com.persistence.CandidateModel
+import com.co.persistence.CandidateModel
 import play.api.libs.json.{Json, Writes}
 
 /**

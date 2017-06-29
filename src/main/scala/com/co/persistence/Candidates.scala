@@ -1,6 +1,6 @@
-package com.persistence
+package com.co.persistence
 
-import com.configuration.DbAccess
+import com.co.configuration.DbAccess
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Future

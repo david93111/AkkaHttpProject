@@ -1,7 +1,7 @@
-package com.api
+package com.co.api
 
 import akka.util.Timeout
-import com.persistence.{CandidateModel, Candidates}
+import com.co.persistence.{CandidateModel, Candidates}
 
 import scala.concurrent.{ExecutionContext, Future}
 
