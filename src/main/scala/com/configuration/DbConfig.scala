@@ -1,4 +1,5 @@
-package co.com.configuration
+package com.configuration
+
 import slick.jdbc.PostgresProfile.api._
 /**
   * Created by david on 28/06/2017.

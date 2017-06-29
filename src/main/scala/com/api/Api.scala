@@ -1,4 +1,4 @@
-package co.com.api
+package com.api
 
 import akka.http.scaladsl.model.ContentTypes.`application/json`
 import akka.http.scaladsl.model.StatusCodes._

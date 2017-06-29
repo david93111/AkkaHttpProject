@@ -1,4 +1,4 @@
-package co.com.boot
+package com.boot
 
 import akka.actor.ActorSystem
 import akka.event.Logging
@@ -7,13 +7,13 @@ import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
-import co.com.api.Api
-import co.com.configuration.AppConfig
-import com.typesafe.config.{Config, ConfigFactory}
+import com.api.Api
+import com.configuration.AppConfig
+import com.typesafe.config.Config
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.concurrent.forkjoin.ForkJoinPool
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Created by david on 24/06/2017.
