@@ -8,7 +8,6 @@ import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.co.api.Api
-import com.co.configuration.AppConfig
 import com.typesafe.config.Config
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -18,9 +17,7 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
   * Created by david on 24/06/2017.
   */
-object Startup extends App with Api{
-  val config = AppConfig.config
-  implicit val system = ActorSystem("akkaSystem", config)
+object Startup extends App with Api with CorsSupport{
 
   implicit def executionContext: ExecutionContext = ExecutionContext.fromExecutorService(new ForkJoinPool)
   implicit def requestTimeout: Timeout = configuredRequestTimeout(config)
@@ -33,7 +30,7 @@ object Startup extends App with Api{
     val port = system.settings.config.getInt("http.port")
     implicit val materializer = ActorMaterializer()
     val bindingFuture: Future[ServerBinding] =
-      Http().bindAndHandle(api, host, port)
+      Http().bindAndHandle(corsHandler(api), host, port)
 
     val log = Logging(system.eventStream, "akka_project")
     bindingFuture.map { serverBinding =>

@@ -25,7 +25,7 @@ trait Api extends ApiServices with ApiMarshallers{
         }
       }
     } ~ path("vote" / "candidates") {
-      pathEndOrSingleSlash {
+       pathEndOrSingleSlash {
         get {
           onSuccess(getCandidates) { candidates =>
             complete(createHttpResponse(OK, Json.toJson(candidates)))
@@ -33,12 +33,18 @@ trait Api extends ApiServices with ApiMarshallers{
         }
       }
     } ~ path("shop" / "products") {
-      pathEndOrSingleSlash {
-        get {
-          onSuccess(getProducts) { products =>
-            complete(createHttpResponse(OK, Json.toJson(products)))
-          }
-        }
+        get{
+          path(IntNumber){ id =>
+              onSuccess(selectProductById(id)) { products =>
+                complete(createHttpResponse(OK, Json.toJson(products)))
+              }
+          } ~ pathEndOrSingleSlash {
+                log.info("Se inicia consulta de productos")
+                onSuccess(getProducts) { products =>
+                  log.info("Consulta de productos exitosa")
+                  complete(createHttpResponse(OK, Json.toJson(products)))
+                }
+            }
       }
     }
   }
@@ -50,7 +56,7 @@ trait Api extends ApiServices with ApiMarshallers{
   }
 
   def createHttpResponse(statusCode: StatusCode, entity: JsValue): HttpResponse = {
-    HttpResponse(statusCode, entity = HttpEntity(`application/json`, entity.toString))
+    HttpResponse(statusCode, entity = HttpEntity(`application/json`, entity.toString)).withHeaders()
   }
 
 }

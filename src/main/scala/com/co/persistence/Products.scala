@@ -25,7 +25,13 @@ trait Products extends DbAccess{
   private val products = TableQuery[Product]
 
   def selectProducts : Future[Seq[(Int, String, Double, String)]] = {
-    db.createSession().database.run(products.result)
+    db.run(products.result)
+  }
+
+  def selectById(id: Int): Future[Seq[(Int, String, Double, String)]] = {
+    db.run(
+      products.filter(_.id === id).result
+    )
   }
 
 }
