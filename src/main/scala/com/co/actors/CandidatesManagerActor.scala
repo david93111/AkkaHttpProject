@@ -1,9 +1,8 @@
 package com.co.actors
 
-import akka.actor.{Actor, ActorRef, Props}
-import akka.event.Logging
-import com.co.actors.messages._
+import akka.actor.{ActorRef, Props}
 import akka.pattern.ask
+import com.co.actors.messages._
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}

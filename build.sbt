@@ -18,4 +18,13 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.5.7",
   "org.postgresql" % "postgresql" % "42.0.0"
 )
+
+mainClass in Compile := Some("com.co.boot.Startup")
+
+enablePlugins(JavaServerAppPackaging)
+
+packageName in Universal := name.value
+
+parallelExecution in Test := false
+fork in Test := false
     

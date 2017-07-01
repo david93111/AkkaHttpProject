@@ -1,16 +1,13 @@
 package com.co.api
 
-import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.event.Logging
+import akka.actor.{ActorRef, Props}
+import akka.pattern.ask
 import akka.util.Timeout
 import com.co.actors.CandidatesManagerActor
-import com.co.actors.messages._
-import com.co.configuration.AppConfig
+import com.co.actors.messages.{CreateCandidate, GetCandidate, Response, VoteCandidate}
+import com.co.boot.ApiDirectives
 import com.co.model.{NotFound, ProjectModel}
 import com.co.persistence._
-import com.typesafe.config.Config
-import akka.pattern.ask
-import com.co.boot.ApiDirectives
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
