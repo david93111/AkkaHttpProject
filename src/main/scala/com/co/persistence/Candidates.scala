@@ -1,6 +1,7 @@
 package com.co.persistence
 
 import com.co.configuration.DbAccess
+import com.co.model.ProjectModel
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Future
@@ -8,7 +9,9 @@ import scala.concurrent.Future
 /**
   * Created by david on 28/06/2017.
   */
-case class CandidateModel(id: Int, name: String, lastname: String, username: String)
+case class CandidateModel(id: Int, name: String, lastname: String, username: String) extends ProjectModel
+
+case class CandidateModelWithVote(id: Int, name: String, lastname: String, username: String,votes: Int) extends ProjectModel
 
 trait Candidates extends DbAccess{
 
@@ -24,7 +27,7 @@ trait Candidates extends DbAccess{
   private val candidates = TableQuery[Candidate]
 
   def selectCandidates : Future[Seq[(Int, String, String, String)]] = {
-    db.createSession().database.run(candidates.result)
+    db.run(candidates.result)
   }
 
 }

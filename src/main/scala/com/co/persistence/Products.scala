@@ -1,6 +1,7 @@
 package com.co.persistence
 
 import com.co.configuration.DbAccess
+import com.co.model.ProjectModel
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Future
@@ -9,7 +10,7 @@ import scala.concurrent.Future
   * Created by david on 29/06/2017.
   */
 
-case class ProductsModel(id: Int,name: String, price: Double, imageUrl:String)
+case class ProductsModel(id: Int,name: String, price: Double, imageUrl:String) extends ProjectModel
 
 trait Products extends DbAccess{
 

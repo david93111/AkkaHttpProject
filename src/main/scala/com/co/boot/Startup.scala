@@ -7,32 +7,30 @@ import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
-import com.co.api.Api
+import com.co.api.{Api, ErrorHandler}
 import com.typesafe.config.Config
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
-import scala.concurrent.forkjoin.ForkJoinPool
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
 /**
   * Created by david on 24/06/2017.
   */
-object Startup extends App with Api with CorsSupport{
+object Startup extends App with Api with CorsSupport with ErrorHandler{
 
-  implicit def executionContext: ExecutionContext = ExecutionContext.fromExecutorService(new ForkJoinPool)
+  implicit def executionContext: ExecutionContext = ExecutionContext.Implicits.global
   implicit def requestTimeout: Timeout = configuredRequestTimeout(config)
 
   startUp(pathApi)
 
   def startUp(api: Route)(implicit system: ActorSystem): Unit = {
-    implicit val ec = system.dispatcher
+    implicit val ec: ExecutionContextExecutor = system.dispatcher
     val host = system.settings.config.getString("http.host")
     val port = system.settings.config.getInt("http.port")
     implicit val materializer = ActorMaterializer()
     val bindingFuture: Future[ServerBinding] =
-      Http().bindAndHandle(corsHandler(api), host, port)
+      Http().bindAndHandle(handleException(corsHandler(api)), host, port)
 
-    val log = Logging(system.eventStream, "akka_project")
     bindingFuture.map { serverBinding =>
       log.info(s"Server Started on ${serverBinding.localAddress} ")
     }.onFailure {
@@ -40,6 +38,8 @@ object Startup extends App with Api with CorsSupport{
         log.error(ex, s"Server Bind Failed cause $ex", host, port)
         system.terminate()
     }
+
+    startCandidates()
   }
 
   def configuredRequestTimeout(config: Config): Timeout = {
