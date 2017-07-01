@@ -29,6 +29,6 @@ class CandidatesManagerActorTest extends TestKit(ActorSystem("MySpec"))
       expectNoMsg()
 
     }
-    
+
   }
 }
