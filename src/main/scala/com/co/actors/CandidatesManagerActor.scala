@@ -1,7 +1,7 @@
 package com.co.actors
 
 import akka.actor.{ActorRef, Props}
-import akka.pattern.ask
+import akka.pattern.{ask,pipe}
 import com.co.actors.messages._
 
 import scala.concurrent.duration.Duration
@@ -30,11 +30,9 @@ class CandidatesManagerActor extends BaseActor{
       log.info("Se inicia obtencion del voto")
       val candidateActor: Option[ActorRef] = context.child(select.name)
       val response = candidateActor.map{ candidate =>
-        val votes: Future[Any] = ask(candidate, GiveVotes)(timeout)
-        Await.result[Any](votes,Duration("5s"))
+        log.info(s"Se ha realizado la obtencion de votos$response")
+        ask(candidate, GiveVotes)(timeout).pipeTo(sender())
       }
-      log.info(s"El voto obtenido es $response")
-      sender() ! response.getOrElse(0)
   }
 
 }
